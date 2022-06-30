@@ -1,22 +1,25 @@
 <template>
   <div>
   <h1>欢迎来到主界面</h1>
-  <Welcome msg="miles"/>
   <el-button @click="goHome">回首页</el-button>
   </div>
 </template>
 
 
 <script>
-import Welcome from "./Welcome.vue";
 export default {
     name: "login",
+    mounted() {
+
+    },
     methods: {
         goHome() {
-            this.$router.push("/welcome");
+            this.$request.get('/login', {name:'miles'},{mock:true,loading:true}).then((res)=>{
+                console.log(res);
+            })
+            // this.$router.push("/welcome");
         }
     },
-    components: { Welcome }
 }
 </script>
 
