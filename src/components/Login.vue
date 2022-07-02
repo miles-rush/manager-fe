@@ -14,10 +14,10 @@ export default {
     },
     methods: {
         goHome() {
-            this.$request.get('/login', {name:'miles'},{mock:true,loading:true}).then((res)=>{
-                console.log(res);
-            })
-            // this.$router.push("/welcome");
+            // this.$request.get('/login', {name:'miles'},{mock:true,loading:true}).then((res)=>{
+            //     console.log(res);
+            // })
+            this.$router.push("/welcome");
         }
     },
 }

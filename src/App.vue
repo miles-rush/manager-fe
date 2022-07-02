@@ -3,13 +3,11 @@
 </template>
 <script>
   export default {
-    name: 'app',
-    mounted() {
-      this.$storage.setItem('age', 60);
-    }
+    name: 'app'
   }
 </script>
 
-<style>
-
+<style lang="scss">
+@import './assets/style/reset.css';
+@import './assets/style/index.scss';
 </style>
