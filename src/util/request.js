@@ -13,29 +13,29 @@ const NETWORK_ERROR = '网络请求异常，请稍后重试'
 // 创建axios实例对象，添加全局配置
 const service = axios.create({
     baseURL: config.baseApi,
-    timeout:8000,
+    timeout: 8000,
 
 })
 
 // 请求拦截
-service.interceptors.request.use((req)=>{
+service.interceptors.request.use((req) => {
     // TO-DO
     const headers = req.headers;
-    const {token} = storage.getItem('userInfo') 
-    if(!headers.Authorization) headers.Authorization = 'Bearer ' + token;
+    const { token } = storage.getItem('userInfo')
+    if (!headers.Authorization) headers.Authorization = 'Bearer ' + token;
     return req;
 })
 
 // 响应拦截
-service.interceptors.response.use((res)=>{
-    const {code, data, msg} = res.data;
-    if(code === 200) {
+service.interceptors.response.use((res) => {
+    const { code, data, msg } = res.data;
+    if (code === 200) {
         return data;
-    } else if(code === 50001) {
+    } else if (code === 50001) {
         ElMessage.error(TOKEN_INVALID);
-        setTimeout(()=>{
+        setTimeout(() => {
             router.push('/login');
-        },3000)
+        }, 3000)
         return Promise.reject(TOKEN_INVALID);
     } else {
         ElMessage.error(msg || NETWORK_ERROR);
@@ -49,28 +49,31 @@ service.interceptors.response.use((res)=>{
  * @returns 
  */
 function request(options) {
-    options.method = options.method || 'get' 
-    if(options.method.toLowerCase() === 'get') {
+    options.method = options.method || 'get'
+    if (options.method.toLowerCase() === 'get') {
         options.params = options.data;
     }
-    if(typeof options.mock != 'undefined') {
-        config.mock = options.mock;
+    // 全局
+    let isMock = config.mock;
+    // 局部接口
+    if (typeof options.mock != 'undefined') {
+        isMock = options.mock;
     }
-    if(config.env === 'prod') {
+    if (config.env === 'prod') {
         service.defaults.baseURL = config.baseApi
     } else {
-        service.defaults.baseURL = config.mock ? config.mockApi : config.baseApi
+        service.defaults.baseURL = isMock ? config.mockApi : config.baseApi
     }
 
     return service(options);
 }
 
-['get', 'post', 'put', 'delete', 'patch'].forEach((item)=>{
+['get', 'post', 'put', 'delete', 'patch'].forEach((item) => {
     request[item] = (url, data, options) => {
         return request({
             url,
             data,
-            method:item,
+            method: item,
             ...options
         })
     }
