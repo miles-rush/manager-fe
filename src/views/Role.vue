@@ -55,7 +55,10 @@
       ></el-pagination>
     </div>
     <!-- 角色新增表单 -->
-    <el-dialog title="角色新增" v-model="showModal">
+    <el-dialog
+      :title="action === 'create' ? '角色创建' : '角色编辑'"
+      v-model="showModal"
+    >
       <el-form
         ref="dialogForm"
         :model="roleForm"
