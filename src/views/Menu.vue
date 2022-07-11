@@ -265,9 +265,17 @@ export default {
     };
     // 菜单操作-删除
     const handleDel = async (_id) => {
-      await proxy.$api.menuSubmit({ _id, action: "delete" });
-      proxy.$message.success("删除成功");
-      getMenuList();
+      proxy
+        .$confirm("是否删除角色", "", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(async () => {
+          await proxy.$api.menuSubmit({ _id, action: "delete" });
+          proxy.$message.success("删除成功");
+          getMenuList();
+        });
     };
     // 弹框关闭
     const handleClose = () => {

@@ -245,7 +245,7 @@ export default {
     onMounted(() => {
       getUserList();
       getDeptList();
-      getRoleList();
+      getRoleAllList();
     });
     // 获取用户列表
     const getUserList = async () => {
@@ -268,28 +268,44 @@ export default {
       getUserList();
     };
     // 用户单个删除
-    const handleDelete = async (row) => {
-      await proxy.$api.userDel({
-        userIds: [row.userId],
-      });
-      proxy.$message.success("删除成功");
-      getUserList();
+    const handleDelete = (row) => {
+      proxy
+        .$confirm("是否删除角色", "", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(async () => {
+          await proxy.$api.userDel({
+            userIds: [row.userId],
+          });
+          proxy.$message.success("删除成功");
+          getUserList();
+        });
     };
     // 批量删除
-    const handlePatchDel = async () => {
+    const handlePatchDel = () => {
       if (checkedUserIds.value.length == 0) {
         proxy.$message.info("请选择要删除的用户");
         return;
       }
-      const res = await proxy.$api.userDel({
-        userIds: checkedUserIds.value,
-      });
-      if (res.modifiedCount > 0) {
-        proxy.$message.success("删除成功");
-        getUserList();
-      } else {
-        proxy.$message.error("修改失败");
-      }
+      proxy
+        .$confirm("是否删除角色", "", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(async () => {
+          const res = await proxy.$api.userDel({
+            userIds: checkedUserIds.value,
+          });
+          if (res.modifiedCount > 0) {
+            proxy.$message.success("删除成功");
+            getUserList();
+          } else {
+            proxy.$message.error("删除失败");
+          }
+        });
     };
     // 表格多选
     const handleSelectionChange = (list) => {
@@ -305,8 +321,8 @@ export default {
       showModal.value = true;
     };
     // 角色列表查询
-    const getRoleList = async () => {
-      const list = await proxy.$api.getRoleList();
+    const getRoleAllList = async () => {
+      const list = await proxy.$api.getRoleAllList();
       roleList.value = list;
     };
     // 部门列表查询
@@ -353,7 +369,7 @@ export default {
       checkedUserIds,
       showModal,
       getUserList,
-      getRoleList,
+      getRoleAllList,
       getDeptList,
       roleList,
       deptList,
