@@ -15,7 +15,7 @@
         :collapse="isCollapse"
         class="nav-menu"
       >
-      <tree-menu :userMenu="userMenu"/>
+        <tree-menu :userMenu="userMenu" />
       </el-menu>
     </div>
     <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
@@ -59,13 +59,13 @@
 
 <script>
 // vite中必须加后缀.vue
-import TreeMenu from './TreeMenu.vue';
-import BreadCrumb from './BreadCrumb.vue';
+import TreeMenu from "./TreeMenu.vue";
+import BreadCrumb from "./BreadCrumb.vue";
 export default {
   name: "Home",
-  components:{
+  components: {
     TreeMenu,
-    BreadCrumb
+    BreadCrumb,
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
     handleLogout(key) {
       if (key == "email") return;
       this.$store.commit("saveUserInfo", "");
-      this.userInfo = null;
+      this.userInfo = {};
       this.$router.push("/login");
     },
     async getNoticesCount() {
@@ -95,9 +95,11 @@ export default {
       this.noticesCount = count;
     },
     async getMenuList() {
-      const list = await this.$api.getMenuList();
-      this.userMenu = list;
-    }
+      const { menuList, actionList } = await this.$api.getPermissionList();
+      this.userMenu = menuList;
+      this.$store.commit("saveUserMenu", menuList);
+      this.$store.commit("saveUserAction", actionList);
+    },
   },
 };
 </script>
@@ -131,22 +133,22 @@ export default {
       border-right: none;
     }
     // 合并
-    &.fold{
+    &.fold {
       width: 64px;
     }
     // 展开
-    &.unfold{
+    &.unfold {
       width: 200px;
     }
   }
   .content-right {
     margin-left: 200px;
     // 合并
-    &.fold{
+    &.fold {
       margin-left: 64px;
     }
     // 展开
-    &.unfold{
+    &.unfold {
       margin-left: 200px;
     }
     .nav-top {

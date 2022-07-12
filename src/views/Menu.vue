@@ -12,14 +12,18 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getMenuList">查询</el-button>
+          <el-button type="primary" @click="getMenuList" v-has="'menu-query'"
+            >查询</el-button
+          >
           <el-button @click="handleReset('form')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleAdd(1)">新增</el-button>
+        <el-button type="primary" @click="handleAdd(1)" v-has="'menu-create'"
+          >新增</el-button
+        >
       </div>
       <el-table
         :data="menuList"
@@ -41,14 +45,19 @@
               @click="handleAdd(2, scope.row)"
               type="primary"
               size="small"
+              v-has="'menu-create'"
               >新增</el-button
             >
-            <el-button @click="handleEdit(scope.row)" size="small"
+            <el-button
+              @click="handleEdit(scope.row)"
+              size="small"
+              v-has="'menu-edit'"
               >编辑</el-button
             >
             <el-button
               type="danger"
               size="small"
+              v-has="'menu-delete'"
               @click="handleDel(scope.row._id)"
               >删除</el-button
             >

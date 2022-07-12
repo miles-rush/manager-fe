@@ -29,6 +29,8 @@
 
 
 <script>
+import utils from "./../util/utils";
+import storage from "./../util/storage";
 export default {
   name: "login",
   data() {
@@ -59,14 +61,27 @@ export default {
     login() {
       this.$refs.userForm.validate((valid) => {
         if (valid) {
-          this.$api.login(this.user).then((res) => {
+          this.$api.login(this.user).then(async (res) => {
             this.$store.commit("saveUserInfo", res);
+            await this.loadAsyncRoutes();
             this.$router.push("/welcome");
           });
         } else {
           return false;
         }
       });
+    },
+    async loadAsyncRoutes() {
+      let userInfo = storage.getItem("userInfo") || {};
+      if (userInfo.token) {
+        const { menuList } = await this.$api.getPermissionList();
+        let routes = utils.generateRoutes(menuList);
+        routes.map((route) => {
+          let url = `./../views/${route.component}.vue`;
+          route.component = () => import(/* @vite-ignore */ url);
+          this.$router.addRoute("home", route);
+        });
+      }
     },
   },
 };
