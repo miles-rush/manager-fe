@@ -14,6 +14,9 @@ const goHome = () => {
 };
 </script>
 <style lang="scss">
+body {
+  min-height: 550px;
+}
 .exception {
   position: relative;
   .text {

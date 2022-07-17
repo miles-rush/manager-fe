@@ -94,6 +94,11 @@ async function loadAsyncRoutes() {
 }
 
 await loadAsyncRoutes();
+// 解决router未初始化的问题
+// setTimeout(async () => {
+//     await loadAsyncRoutes();
+// })
+
 
 // 判断当前地址是否可以访问
 // function checkPermission(path) {
