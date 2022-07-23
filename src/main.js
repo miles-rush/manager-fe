@@ -10,6 +10,9 @@ import storage from './util/storage'
 import api from './api';
 import store from './store'
 
+// 自定义组件
+import QueryForm from '../packages/QueryForm/index.js'
+
 
 // console.log('环境变量=>', import.meta.env)
 
@@ -45,4 +48,9 @@ app.config.globalProperties.$request = request;
 app.config.globalProperties.$storage = storage;
 app.config.globalProperties.$api = api;
 
-app.use(store).use(ElementPlus, { size: 'small' }).use(router).mount('#app')
+app
+    .use(store)
+    .use(ElementPlus, { size: 'small' })
+    .use(router)
+    .use(QueryForm)
+    .mount('#app')

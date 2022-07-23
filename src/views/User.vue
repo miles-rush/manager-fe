@@ -1,7 +1,8 @@
 <template>
   <div class="user-manage">
     <div class="query-form">
-      <el-form ref="form" :inline="true" :model="user">
+      <query-form :form="form" v-model="user" @handleQuery="handleQuery" />
+      <!-- <el-form ref="form" :inline="true" :model="user">
         <el-form-item label="用户ID" prop="userId">
           <el-input v-model="user.userId" placeholder="请输入用户ID" />
         </el-form-item>
@@ -20,7 +21,7 @@
           <el-button @click="handleQuery" type="primary">查询</el-button>
           <el-button @click="handleReset('form')">重置</el-button>
         </el-form-item>
-      </el-form>
+      </el-form> -->
     </div>
     <div class="base-table">
       <div class="action">
@@ -154,9 +155,50 @@ export default {
   setup() {
     // 获取Composition API 上下文对象
     const { proxy } = getCurrentInstance();
-    const user = reactive({
+    const form = [
+      {
+        type: "input",
+        label: "用户ID",
+        model: "userId",
+        placeholder: "请输入用户ID",
+      },
+      {
+        type: "input",
+        label: "用户名称",
+        model: "userName",
+        placeholder: "请输入用户名称",
+      },
+      {
+        type: "select",
+        label: "状态",
+        model: "state",
+        placeholder: "请选择状态",
+        options: [
+          {
+            label: "所有",
+            value: 0,
+          },
+          {
+            label: "在职",
+            value: 1,
+          },
+          {
+            label: "离职",
+            value: 2,
+          },
+          {
+            label: "试用期",
+            value: 3,
+          },
+        ],
+      },
+    ];
+    const user = ref({
       state: 0,
     });
+    // const user = reactive({
+    //   state: 0,
+    // });
     const userList = ref([]);
     const showModal = ref(false);
     const pager = reactive({
@@ -260,7 +302,7 @@ export default {
     });
     // 获取用户列表
     const getUserList = async () => {
-      let params = { ...user, ...pager };
+      let params = { ...user.value, ...pager };
       const { list, page } = await proxy.$api.getUserList(params);
       userList.value = list;
       pager.total = page.total;
@@ -374,6 +416,7 @@ export default {
       });
     };
     return {
+      form,
       user,
       userList,
       columns,
