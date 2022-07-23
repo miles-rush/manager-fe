@@ -23,7 +23,28 @@
         </el-form-item>
       </el-form> -->
     </div>
-    <div class="base-table">
+    <base-table
+      :columns="columns"
+      :data="userList"
+      :pager="pager"
+      @selection-change="handleSelectionChange"
+      @handleAction="handleAction"
+      @handleCurrentChange="handleCurrentChange"
+    >
+      <!-- 插槽 -->
+      <template v-slot:action>
+        <el-button @click="handleCreate" type="primary" v-has="'user-create'"
+          >新增</el-button
+        >
+        <el-button
+          @click="handlePatchDel"
+          type="danger"
+          v-has="'user-patch-delete'"
+          >批量删除</el-button
+        >
+      </template>
+    </base-table>
+    <!-- <div class="base-table">
       <div class="action">
         <el-button @click="handleCreate" type="primary" v-has="'user-create'"
           >新增</el-button
@@ -71,7 +92,7 @@
         :total="pager.total"
         @current-change="handleCurrentChange"
       />
-    </div>
+    </div> -->
     <el-dialog
       :title="action == 'add' ? '用户新增' : '用户编辑'"
       v-model="showModal"
@@ -203,9 +224,12 @@ export default {
     const showModal = ref(false);
     const pager = reactive({
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 5,
     });
     const columns = reactive([
+      {
+        type: "selection",
+      },
       {
         label: "用户ID",
         prop: "userId",
@@ -252,6 +276,15 @@ export default {
         formatter: (row, column, value) => {
           return utils.formateDate(new Date(value));
         },
+      },
+      {
+        label: "操作",
+        type: "action",
+        width: 150,
+        list: [
+          { text: "编辑", type: "primary" },
+          { text: "删除", type: "danger" },
+        ],
       },
     ]);
     // 选中用户列表的对象
@@ -407,6 +440,13 @@ export default {
         }
       });
     };
+    const handleAction = ({ index, row }) => {
+      if (index == 0) {
+        handleEdit(row);
+      } else if (index == 1) {
+        handleDelete(row);
+      }
+    };
     // 用户编辑
     const handleEdit = (row) => {
       action.value = "edit";
@@ -441,6 +481,7 @@ export default {
       handleClose,
       handleSubmit,
       handleEdit,
+      handleAction,
     };
   },
 };

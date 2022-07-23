@@ -11,8 +11,8 @@ import api from './api';
 import store from './store'
 
 // 自定义组件
-import QueryForm from '../packages/QueryForm/index.js'
-
+// import QueryForm from '../packages/QueryForm/index.js'
+import Own from '../packages'
 
 // console.log('环境变量=>', import.meta.env)
 
@@ -52,5 +52,5 @@ app
     .use(store)
     .use(ElementPlus, { size: 'small' })
     .use(router)
-    .use(QueryForm)
+    .use(Own)
     .mount('#app')
