@@ -1,7 +1,20 @@
-# Vue 3 + Vite
+#### 项目演示地址:
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+https://www.mirrormoon.top:7979/
 
-## Recommended IDE Setup
+管理员账户:
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+admin - admin
+
+admin1 - admin1
+
+admin3 - admin3
+
+普通用户账户:
+
+user1 - user1
+
+#### 项目脚手架:
+
+#### 项目后台Koa2地址:
+https://github.com/miles-rush/v-cli
