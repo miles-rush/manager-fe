@@ -11,7 +11,7 @@ import api from './api';
 import store from './store'
 
 
-// console.log('环境变量=>',import.meta.env)
+// console.log('环境变量=>', import.meta.env)
 
 const app = createApp(App);
 
