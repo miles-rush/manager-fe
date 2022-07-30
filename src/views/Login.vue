@@ -31,6 +31,7 @@
 <script>
 import utils from "./../util/utils";
 import storage from "./../util/storage";
+const modules = import.meta.glob("./../views/*.vue");
 export default {
   name: "login",
   data() {
@@ -78,7 +79,8 @@ export default {
         let routes = utils.generateRoutes(menuList);
         routes.map((route) => {
           let url = `./../views/${route.component}.vue`;
-          route.component = () => import(/* @vite-ignore */ url);
+          // route.component = () => import(/* @vite-ignore */url);
+          route.component = modules[url];
           this.$router.addRoute("home", route);
         });
       }

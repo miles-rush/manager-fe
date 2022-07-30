@@ -96,6 +96,8 @@ export default {
     handleLogout(key) {
       if (key == "email") return;
       this.$store.commit("saveUserInfo", "");
+      this.$store.commit("saveUserMenu", "");
+      this.$store.commit("saveUserAction", "");
       this.userInfo = {};
       this.$router.push("/login");
     },

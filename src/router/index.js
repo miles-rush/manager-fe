@@ -3,7 +3,7 @@ import Home from './../components/Home.vue'
 import storage from './../util/storage'
 import api from './../api';
 import utils from './../util/utils';
-
+const modules = import.meta.glob('./../views/*.vue')
 const routes = [
     {
         name: 'home',
@@ -87,7 +87,8 @@ async function loadAsyncRoutes() {
         let routes = utils.generateRoutes(menuList);
         routes.map(route => {
             let url = `./../views/${route.component}.vue`
-            route.component = () => import(/* @vite-ignore */url);
+            // route.component = () => import(/* @vite-ignore */url);
+            route.component = modules[url]
             router.addRoute('home', route);
         })
     }
